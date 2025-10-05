@@ -30,6 +30,7 @@ app.use(session({
     secure:false,
     sameSite:'lax',
     maxAge:24*60*60*1000
+  }
 }));
 app.use(Passport.initialize());
 app.use(Passport.session())
