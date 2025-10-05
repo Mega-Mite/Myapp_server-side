@@ -15,6 +15,8 @@ const port = 4000;
 require('dotenv').config();
 
 mongo_Connection();
+const user_Routes = require('./user_routes--/user_route--/user_route.js');
+const admin_Routes = require('./user_routes--/admin_route/admin-routes.js');
 
 // ✅ FIXED CORS - Add ALL your domains
 const allowedOrigins = [
