@@ -39,9 +39,6 @@ app.use(Passport.session())
   // console.log('Session ID:', req.sessionID);
   // console.log('Session:', req.session);
   // next();
-// console.log('Session ID:', req.sessionID);
-// console.log('Session:', req.session);
-// next();
 // });
 
 // routes
