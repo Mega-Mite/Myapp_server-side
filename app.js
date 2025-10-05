@@ -7,37 +7,37 @@ const cors = require('cors');
 const passport = require('./user_routes--/user_route--/crtl_models-/googleOath.js')
 const { mongo_Connection } = require('./user_routes--/user_route--/DB/connection.js');
 const github = require('./user_routes--/user_route--/crtl_models-/githubOauht.js');
-//const MongoStore = require('connect-mongo');
-//const session = require('express-session');
+const MongoStore = require('connect-mongo');
+const session = require('express-session');
 const verifyToken = require('./user_routes--/user_route--/Autherization/verifyToken.js');
 const new_Cart = require('./user_routes--/user_route--/cart_session/cart_control.js');
 const port = 4000;
 require('dotenv').config();
 mongo_Connection();
 
-//const route = express.Router();
-// Add error handling for MongoStore
-const session = require('express-session');
-const MongoStore = require('connect-mongo');
+const route = express.Router();
 app.use(session({
-  secret: process.env.session_secret||"secret",
+  secret: process.env.session_secret,
   resave: false,
   saveUninitialized: false,
   store: MongoStore.create({
-    mongoUrl: process.env.db_storage,
+    mongoUrl:process.env.db_storage,
     collectionName: 'sessions',
+    ttl: 24 * 60 * 60 * 1000 // 24 hours
   }),
-  cookie: {
-    httpOnly: true,    // ✅ FIX: httpsOnly → httpOnly
-    secure: false,     // false for development (localhost)
-    sameSite: 'lax',
-    maxAge: 24 * 60 * 60 * 1000
-  }
+  cookie:{
+    httpOnly:true,
+    secure:false,
+    sameSite:'lax',
+    maxAge:24*60*60*1000
 }));
 app.use(Passport.initialize());
 app.use(Passport.session())
 
 // app.use((req, res, next) => {
+  // console.log('Session ID:', req.sessionID);
+  // console.log('Session:', req.session);
+  // next();
 // console.log('Session ID:', req.sessionID);
 // console.log('Session:', req.session);
 // next();
@@ -54,11 +54,12 @@ app.use(express.json());
 app.use(bodyParser.json());
 
 app.use(cors({
-  origin: ['http://localhost:5173', 'https://grahql-apollo-server.onrender.com'],
+  origin: ['http://localhost:5173','https://grahql-apollo-server.onrender.com'],
   credentials: true, // mandoatory for google auths
   methods: ['GET', 'POST', 'DELETE', 'PUT', 'PATCH'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'Cookie', 'Set-Cookie'],
-  exposedHeaders: ['Set-Cookie', 'Authorization'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
+  exposedHeaders:['Access-Control-Allow-Origin'],
+  exposedHeaders: ['Authorization'],
 }));
 
 
@@ -68,6 +69,6 @@ app.use('/user_side', user_Routes)
 app.use('/admin_side', admin_Routes)
 
 
-app.listen(port, '0.0.0.0', () => {
+app.listen(port,'0.0.0.0', () => {
   console.log("server is running on port 4000");
 })
