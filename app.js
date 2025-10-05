@@ -28,8 +28,8 @@ app.use(session({
     collectionName: 'sessions',
   }),
   cookie: {
-    httpsOnly: true,
-    secure: false, // Set to true in production with HTTPS
+    httpOnly: true,    // ✅ FIX: httpsOnly → httpOnly
+    secure: false,     // false for development (localhost)
     sameSite: 'lax',
     maxAge: 24 * 60 * 60 * 1000
   }
