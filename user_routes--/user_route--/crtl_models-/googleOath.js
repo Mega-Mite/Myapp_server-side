@@ -36,7 +36,7 @@ function (accessToken, refreshToken, profile, done) {
                 email: profile.emails[0].value,
             });
             if (userIn) {
-                //console.log('userIn',userIn)
+                console.log('userIn',userIn)
                 done(null, userIn);
             }
             else {
@@ -51,6 +51,7 @@ function (accessToken, refreshToken, profile, done) {
                     result = yield newAuthusers.save();
                     if (result) {
                         done(null, result);
+                        console.log("result_oauth2",result)
                         //counter_mail(result);
                     }
                     //console.log(result);
