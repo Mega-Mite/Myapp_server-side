@@ -61,6 +61,15 @@ app.use(session({
 
   app.use(Passport.initialize());
 app.use(Passport.session());
+
+app.use((req, res, next) => {
+  console.log('=== SESSION DEBUG ===');
+  console.log('Request Origin:', req.headers.origin);
+  console.log('Request Host:', req.headers.host);
+  console.log('Cookies Received:', req.cookies);
+  console.log('====================');
+  next();
+});
 // app.use((req, res, next) => {
 // console.log(req.headers.get('cookies'))
 // console.log(req.headers['access'])
