@@ -43,7 +43,7 @@ app.use(cors({
 }));
 
 // ✅ FIXED Session Configuration
-pp.use(session({
+app.use(session({
   secret: process.env.session_secret || "secret",
   resave: true,
   saveUninitialized: false,
