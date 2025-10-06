@@ -52,9 +52,9 @@ app.use(session({
     collectionName: 'sessions',
   }),
   cookie: {
-    httpOnly: true,        // ✅ FIXED: 'httpOnly' not 'httpsOnly'
-    secure: true,          // ✅ FIXED: true for production (HTTPS)
-    sameSite: 'none',      // ✅ FIXED: 'none' for cross-domain
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production', // ✅ Dynamic: false locally, true in production
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // ✅ Dynamic
     maxAge: 24 * 60 * 60 * 1000
   }
 }));
@@ -62,20 +62,7 @@ app.use(session({
   app.use(Passport.initialize());
 app.use(Passport.session());
 
-app.use((req, res, next) => {
-  console.log('=== SESSION DEBUG ===');
-  console.log('Request Origin:', req.headers.origin);
-  console.log('Request Host:', req.headers.host);
-  console.log('Cookies Received:', req.cookies);
-  console.log('====================');
-  next();
-});
-// app.use((req, res, next) => {
-// console.log(req.headers.get('cookies'))
-// console.log(req.headers['access'])
-// console.log('All Headers:', Object.fromEntries(req.headers));
-//     next();
-// });
+
 
 // Middleware
 app.use('/uploads', express.static('uploads'));
