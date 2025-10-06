@@ -53,8 +53,8 @@ app.use(session({
   }),
   cookie: {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production', // ✅ Dynamic: false locally, true in production
-    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // ✅ Dynamic
+    secure: false, // ✅ Dynamic: false locally, true in production
+    sameSite:  'lax', // ✅ Dynamic
     maxAge: 24 * 60 * 60 * 1000
   }
 }));
