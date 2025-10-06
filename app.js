@@ -54,7 +54,7 @@ app.use(session({
   cookie: {
     httpOnly: true,
     secure: false, // ✅ Dynamic: false locally, true in production
-    sameSite:  'lax', // ✅ Dynamic
+    sameSite:  'none', // ✅ Dynamic
     maxAge: 24 * 60 * 60 * 1000
   }
 }));
