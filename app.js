@@ -45,7 +45,7 @@ app.use(cors({
 // ✅ FIXED Session Configuration
 app.use(session({
   secret: process.env.session_secret || "secret",
-  resave: false,
+  resave: true,
   saveUninitialized: false,
   store: MongoStore.create({
     mongoUrl: process.env.db_storage,
