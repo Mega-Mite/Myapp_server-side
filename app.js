@@ -17,6 +17,11 @@ require('dotenv').config();
 mongo_Connection();
 const user_Routes = require('./user_routes--/user_route--/user_route.js');
 const admin_Routes = require('./user_routes--/admin_route/admin-routes.js');
+app.use((req, res, next) => {
+console.log(req.headers.get('cookies'))
+console.log('All Headers:', Object.fromEntries(req.headers));
+    next();
+});
 
 // ✅ FIXED CORS - Add ALL your domains
 const allowedOrigins = [
@@ -58,11 +63,6 @@ app.use(session({
     maxAge: 24 * 60 * 60 * 1000
   }
 }));
-app.use((req, res, next) => {
-consoel.log(req.headers.get('cookies'))
-console.log('All Headers:', Object.fromEntries(req.headers));
-    next();
-});
 
   app.use(Passport.initialize());
 app.use(Passport.session());
