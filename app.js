@@ -58,7 +58,7 @@ app.use(session({
     maxAge: 24 * 60 * 60 * 1000
   }
 }));
-pp.use((req, res, next) => {
+app.use((req, res, next) => {
 consoel.log(req.headers.get('cookies'))
 console.log('All Headers:', Object.fromEntries(req.headers));
     next();
