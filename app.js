@@ -43,7 +43,7 @@ app.use(cors({
 }));
 
 // ✅ FIXED Session Configuration
-app.use(session({
+pp.use(session({
   secret: process.env.session_secret || "secret",
   resave: true,
   saveUninitialized: false,
@@ -53,8 +53,8 @@ app.use(session({
   }),
   cookie: {
     httpOnly: true,
-    secure: false, // ✅ Dynamic: false locally, true in production
-    sameSite:  'none', // ✅ Dynamic
+    secure: false,      // Keep false for localhost
+    sameSite: false,    // ← TEMPORARY: Disable sameSite entirely
     maxAge: 24 * 60 * 60 * 1000
   }
 }));
