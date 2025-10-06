@@ -19,7 +19,7 @@ const user_Routes = require('./user_routes--/user_route--/user_route.js');
 const admin_Routes = require('./user_routes--/admin_route/admin-routes.js');
 app.use((req, res, next) => {
 console.log(req.headers.get('cookies')
-            req.headers['access'];
+console.log(req.headers['access'])
 console.log('All Headers:', Object.fromEntries(req.headers));
     next();
 });
