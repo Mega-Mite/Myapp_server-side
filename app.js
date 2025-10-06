@@ -58,8 +58,13 @@ app.use(session({
     maxAge: 24 * 60 * 60 * 1000
   }
 }));
+pp.use((req, res, next) => {
+consoel.log(req.headers.get('cookies'))
+console.log('All Headers:', Object.fromEntries(req.headers));
+    next();
+});
 
-app.use(Passport.initialize());
+  app.use(Passport.initialize());
 app.use(Passport.session());
 
 // Middleware
