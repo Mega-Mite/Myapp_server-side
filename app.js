@@ -61,12 +61,12 @@ app.use(session({
 
   app.use(Passport.initialize());
 app.use(Passport.session());
-app.use((req, res, next) => {
-console.log(req.headers.get('cookies'))
-console.log(req.headers['access'])
-console.log('All Headers:', Object.fromEntries(req.headers));
-    next();
-});
+// app.use((req, res, next) => {
+// console.log(req.headers.get('cookies'))
+// console.log(req.headers['access'])
+// console.log('All Headers:', Object.fromEntries(req.headers));
+//     next();
+// });
 
 // Middleware
 app.use('/uploads', express.static('uploads'));
