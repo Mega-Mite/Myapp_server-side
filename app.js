@@ -71,7 +71,6 @@ app.use(bodyParser.json());
 // routes
 const user_Routes = require('./user_routes--/user_route--/user_route.js');
 const admin_Routes = require('./user_routes--/admin_route/admin-routes.js');
-@@ -61,27 +51,20 @@
 app.use(bodyParser.json());
 
 app.use(cors({
