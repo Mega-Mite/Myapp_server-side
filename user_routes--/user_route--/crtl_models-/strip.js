@@ -1,39 +1,73 @@
-"use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.stripcall = void 0;
+const express = require('express');
+const morgan = require('morgan');
+const bodyParser = require('body-parser');
+const app = express();
+const Passport = require('passport');
+const cors = require('cors');
+const passport = require('./user_routes--/user_route--/crtl_models-/googleOath.js')
+const { mongo_Connection } = require('./user_routes--/user_route--/DB/connection.js');
+const github = require('./user_routes--/user_route--/crtl_models-/githubOauht.js');
+const MongoStore = require('connect-mongo');
+const session = require('express-session');
+const verifyToken = require('./user_routes--/user_route--/Autherization/verifyToken.js');
+const new_Cart = require('./user_routes--/user_route--/cart_session/cart_control.js');
+const port = 4000;
 require('dotenv').config();
-const stripcall = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const Stripe = require("stripe");
-    const stripe = new Stripe(process.env.Strip_Secret_Key);
-    try {
-        let clientside;
-        let data = req.body;
-        const amount = Number(data.amount);
-        const { currency } = data;
-        console.log(amount, currency);
-        yield stripe.paymentIntents.create({
-            amount: amount,
-            currency: currency
-        }).then((paymentIntent) => {
-            console.log(paymentIntent.client_secret);
-            clientside = paymentIntent.client_secret;
-        });
-        res.setHeader("Content-Type", "application/json");
-        res.status(200).json({
-            clientside: clientside
-        });
-    }
-    catch (error) {
-        console.log(error);
-    }
-});
-exports.stripcall = stripcall;
+mongo_Connection();
+
+const route = express.Router();
+app.use(session({
+  secret: process.env.session_secret,
+  resave: false,
+  saveUninitialized: false,
+  store: MongoStore.create({
+    mongoUrl: process.env.db_storage,
+    collectionName: 'sessions',
+    ttl: 24 * 60 * 60 * 1000 // 24 hours
+  }),
+  cookie: {
+    httpOnly: true,
+    secure: false,
+    sameSite: 'lax',
+    maxAge: 24 * 60 * 60 * 1000
+  }
+}));
+app.use(Passport.initialize());
+app.use(Passport.session())
+
+// app.use((req, res, next) => {
+// console.log('Session ID:', req.sessionID);
+// console.log('Session:', req.session);
+// next();
+// });
+
+// routes
+const user_Routes = require('./user_routes--/user_route--/user_route.js');
+const admin_Routes = require('./user_routes--/admin_route/admin-routes.js');
+const exp = require('constants');
+
+app.use('/uploads', express.static('uploads'))
+app.use(morgan("dev"));
+app.use(express.json());
+app.use(bodyParser.json());
+
+app.use(cors({
+  origin: ['http://localhost:5173', 'http://localhost:8383'],
+  credentials: true, // mandoatory for google auths
+  methods: ['GET', 'POST', 'DELETE', 'PUT', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
+  //exposedHeaders:['Access-Control-Allow-Origin'],
+  exposedHeaders: ['Authorization'],
+}));
+
+
+
+/// rout middleware 
+app.use('/user_side', user_Routes)
+app.use('/admin_side', admin_Routes)
+
+
+
+  app.listen(port,'0.0.0.0', () => {
+    console.log("server is running on port 4000");
+  })
