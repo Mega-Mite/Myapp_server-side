@@ -23,29 +23,21 @@ mongo_Connection()
 const route = express.Router();
 app.use(session({
   secret: 'secret',
-  //secret: process.env.session_secret,
-  resave: false,
-  saveUninitialized: false,
-  store: MongoStore.create({
+   store: MongoStore.create({
     mongoUrl: "mongodb+srv://sanjaykrishna038:mO1fxSmpmRsMFxbC@cluster0.aztv7.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
-    //mongoUrl:process.env.db_storage,
     collectionName: 'sessions',
-    //maxAge: 24 * 60 * 60 * 1000 // 24 hours
-    ttl: 24 * 60 * 60 * 1000 // 24 hours
+    maxAge: 24 * 60 * 60 * 1000 // 24 hours
   }),
-
-
-
-  // cookie: {
-  //secure: process.env.NODE_ENV === 'production',
-  // maxAge: 24 * 60 * 60 * 1000 // 24 hours
-  // }
-  cookie:{
-    httpOnly:true,
-    secure:false,
-    sameSite:'lax',
-    maxAge:24*60*60*1000
-  }
+  resave: false,
+  proxy: true,
+  saveUninitialized: false,
+  expiration: 360,
+cookie: {
+maxAge: 300 * 1000,
+httpOnly: true,
+secure: true,
+sameSite: 'none'
+}
 }));
 app.use(Passport.initialize());
 app.use(Passport.session())
