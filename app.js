@@ -73,17 +73,16 @@ const user_Routes = require('./user_routes--/user_route--/user_route.js');
 const admin_Routes = require('./user_routes--/admin_route/admin-routes.js');
 app.use(bodyParser.json());
 
-app.use(cors({
-  //origin:'http://localhost:5173',
-  origin: ['http://localhost:5173', 'https://grahql-apollo-server-oao8.onrender.com'],
-  credentials: true, // mandoatory for google auths
-  //methods:['GET', 'POST', 'DELETE', 'PUT', 'PATCH'],
-  methods: ['GET', 'POST', 'DELETE', 'PUT', 'PATCH'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
-  //exposedHeaders:['Access-Control-Allow-Origin'],
-  exposedHeaders: ['Authorization'],
-}));
+// app.use(cors({
+//   origin: ['http://localhost:5173', 'https://grahql-apollo-server-oao8.onrender.com'],
+//   credentials: true, 
+//   methods: ['GET', 'POST', 'DELETE', 'PUT', 'PATCH'],
+//   allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
+//   exposedHeaders:['Access-Control-Allow-Origin'],
+//   exposedHeaders: ['Authorization'],
+// }));
 
+app.use(cors());
 
 //app.options('*', cors())
 
