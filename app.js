@@ -50,7 +50,7 @@ app.use(session({
   cookie: {
     httpOnly: true,
     secure: false,      // Keep false for localhost
-    sameSite: 'none',    // ← TEMPORARY: Disable sameSite entirely
+    sameSite: false,    // ← TEMPORARY: Disable sameSite entirely
     maxAge: 24 * 60 * 60 * 1000
   }
 }));
