@@ -21,8 +21,8 @@ router
     prompt: "consent",
 }));
 router.route("/oauth2/redirect/google").get(passport.authenticate("google", {
-    successRedirect: "https://saastoola-b3f60.web.app",
-    failureRedirect: "https://saastoola-b3f60.web.app/signup",
+    successRedirect: "http://localhost:5173",
+    failureRedirect: "http://localhost:5173/signup",
     session: true,
     failureMessage: true,
 }));
