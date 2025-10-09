@@ -20,7 +20,8 @@ const admin_Routes = require('./user_routes--/admin_route/admin-routes.js');
 
 // ✅ FIXED CORS - Add ALL your domains
 const allowedOrigins = [
-  'http://localhost:5173'
+  'http://localhost:5173',
+  'https://grahql-apollo-server-oao8.onrender.com'
 ];
 
 app.use(cors({
