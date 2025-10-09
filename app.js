@@ -20,10 +20,7 @@ const admin_Routes = require('./user_routes--/admin_route/admin-routes.js');
 
 // ✅ FIXED CORS - Add ALL your domains
 const allowedOrigins = [
-  'https://saastoola-b3f60.web.app', 
-  'https://saastoola-b3f60.web.app',        // ADD YOUR FIREBASE DOMAIN
-  //'https://your-firebase-app.firebaseapp.com', // ADD YOUR FIREBASE DOMAIN
-  'https://grahql-apollo-server.onrender.com'
+  'http://localhost:5173'
 ];
 
 app.use(cors({
