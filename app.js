@@ -2,6 +2,7 @@ const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const app = express();
+const cookieParser = require('cookie-parser);
 const Passport = require('passport');
 const cors = require('cors');
 const passport = require('./user_routes--/user_route--/crtl_models-/googleOath.js')
@@ -57,6 +58,7 @@ app.use((req, res, next) => {
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(bodyParser.json());
+app.use(cookieParser())
 
 
 //app.options('*', cors())
