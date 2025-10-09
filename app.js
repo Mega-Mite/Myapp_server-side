@@ -30,7 +30,7 @@ app.use(session({
     mongoUrl: "mongodb+srv://sanjaykrishna038:mO1fxSmpmRsMFxbC@cluster0.aztv7.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
     //mongoUrl:process.env.db_storage,
     collectionName: 'sessions',
-    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+    //maxAge: 24 * 60 * 60 * 1000 // 24 hours
     ttl: 24 * 60 * 60 * 1000 // 24 hours
   }),
 
