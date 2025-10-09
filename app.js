@@ -6,71 +6,100 @@ const Passport = require('passport');
 const cors = require('cors');
 const passport = require('./user_routes--/user_route--/crtl_models-/googleOath.js')
 const { mongo_Connection } = require('./user_routes--/user_route--/DB/connection.js');
+const github = require('./user_routes--/user_route--/crtl_models-/githubOauht.js')
 const github = require('./user_routes--/user_route--/crtl_models-/githubOauht.js');
-const session = require('express-session');
 const MongoStore = require('connect-mongo');
+const session = require('express-session');
+const verifyToken = require('./user_routes--/user_route--/Autherization/verifyToken.js')
+const new_Cart = require('./user_routes--/user_route--/cart_session/cart_control.js')
 const verifyToken = require('./user_routes--/user_route--/Autherization/verifyToken.js');
 const new_Cart = require('./user_routes--/user_route--/cart_session/cart_control.js');
-const port = 4000;
 require('dotenv').config();
+mongo_Connection()
+
 
 mongo_Connection();
-const user_Routes = require('./user_routes--/user_route--/user_route.js');
-const admin_Routes = require('./user_routes--/admin_route/admin-routes.js');
 
-// ✅ FIXED CORS - Add ALL your domains
-const allowedOrigins = [
-  'http://localhost:5173',
-  'https://grahql-apollo-server-oao8.onrender.com'
-];
-
-app.use(cors({
-  origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) {
-      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-      return callback(new Error(msg), false);
-    }
-    return callback(null, true);
-  },
-  credentials: true,
-  methods: ['GET', 'POST', 'DELETE', 'PUT', 'PATCH'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
-}));
-
-// ✅ FIXED Session Configuration
+const route = express.Router();
 app.use(session({
-  secret: process.env.session_secret || "secret",
-  resave: true,
+  secret: 'secret',
+  secret: process.env.session_secret,
+  resave: false,
   saveUninitialized: false,
   store: MongoStore.create({
-    mongoUrl: process.env.db_storage,
+    mongoUrl: "mongodb+srv://sanjaykrishna038:mO1fxSmpmRsMFxbC@cluster0.aztv7.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
+    mongoUrl:process.env.db_storage,
     collectionName: 'sessions',
+    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+    ttl: 24 * 60 * 60 * 1000 // 24 hours
   }),
-  cookie: {
-    httpOnly: true,
-    secure: false,      // Keep false for localhost
-    sameSite: false,    // ← TEMPORARY: Disable sameSite entirely
-    maxAge: 24 * 60 * 60 * 1000
+
+
+
+  // cookie: {
+  //secure: process.env.NODE_ENV === 'production',
+  // maxAge: 24 * 60 * 60 * 1000 // 24 hours
+  // }
+  cookie:{
+    httpOnly:true,
+    secure:false,
+    sameSite:'lax',
+    maxAge:24*60*60*1000
   }
 }));
+app.use(Passport.initialize());
+app.use(Passport.session())
 
-  app.use(Passport.initialize());
-app.use(Passport.session());
+app.use((req, res, next) => {
+  console.log('Session ID:', req.sessionID);
+  console.log('Session:', req.session);
+  next();
+});
+// app.use((req, res, next) => {
+  // console.log('Session ID:', req.sessionID);
+  // console.log('Session:', req.session);
+  // next();
+// });
 
-
-
-// Middleware
-app.use('/uploads', express.static('uploads'));
+// --------------_----___--_//
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(bodyParser.json());
 
-// Routes
-app.use('/user_side', user_Routes);
-app.use('/admin_side', admin_Routes);
 
-app.listen(port, '0.0.0.0', () => {
-  console.log("Server 1 is running on port 4000");
-});
+//app.options('*', cors())
+// routes
+const user_Routes = require('./user_routes--/user_route--/user_route.js');
+const admin_Routes = require('./user_routes--/admin_route/admin-routes.js');
+@@ -61,27 +51,20 @@
+app.use(bodyParser.json());
+
+app.use(cors({
+  origin:'http://localhost:5173',
+  origin: ['http://localhost:5173', 'https://grahql-apollo-server-oao8.onrender.com'],
+  credentials: true, // mandoatory for google auths
+  methods:['GET', 'POST', 'DELETE', 'PUT', 'PATCH'],
+  methods: ['GET', 'POST', 'DELETE', 'PUT', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
+  //exposedHeaders:['Access-Control-Allow-Origin'],
+  exposedHeaders: ['Authorization'],
+}));
+
+
+//app.options('*', cors())
+
+
+/// rout middleware 
+app.use('/user_side', user_Routes)
+app.use('/admin_side', admin_Routes)
+
+// app.use(express.static('dist', {
+  // setHeaders: (res, path) => {
+    // if (path.endsWith('.js')) {
+      // res.setHeader('Content-Type', 'application/javascript');
+    // }
+  // },
+// }));
+
+app.listen(4000, () => {
+  console.log("server is running on port 4000");
