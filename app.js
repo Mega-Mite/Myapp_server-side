@@ -101,5 +101,5 @@ app.use('/admin_side', admin_Routes)
   // },
 // }));
 
-app.listen(4000, () => {
+app.listen(4000, '0.0.0.0',() => {
   console.log("server is running on port 4000");
