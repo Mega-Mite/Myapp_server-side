@@ -20,7 +20,7 @@ mongo_Connection()
 
 
 //mongo_Connection();
-
+const twentyFourHoursFromNow = new Date(Date.now() + (24 * 60 * 60 * 1000))
 const route = express.Router();
 app.use(session({
   secret: 'secret',
@@ -32,9 +32,9 @@ app.use(session({
   resave: false,
   proxy: true,
   saveUninitialized: false,
-  expiration: 360,
+  expiration: twentyFourHoursFromNow,
 cookie: {
-maxAge: 300 * 1000,
+maxAge: 24 * 60 * 60 * 1000 ,
 httpOnly: true,
 secure: true,
 sameSite: 'none'
@@ -43,11 +43,11 @@ sameSite: 'none'
 app.use(Passport.initialize());
 app.use(Passport.session())
 
-app.use((req, res, next) => {
-  console.log('Session ID:', req.sessionID);
-  console.log('Session:', req.session);
-  next();
-});
+// app.use((req, res, next) => {
+//   console.log('Session ID:', req.sessionID);
+//   console.log('Session:', req.session);
+//   next();
+// });
 // app.use((req, res, next) => {
   // console.log('Session ID:', req.sessionID);
   // console.log('Session:', req.session);
