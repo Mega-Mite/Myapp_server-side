@@ -42,8 +42,8 @@ const sub_home_content = (req, res) => {
 exports.sub_home_content = sub_home_content;
 const getStack = (req, res) => {
     try {
-        console.log('Cookie', req.headers.cookie)
-    console.log('Authorization',req.headers.authorization)
+        console.log('Cookie', req.headers)
+   // console.log('Authorization',req.headers.authorization)
         console.log("___------", req.query.stack);
         const stackOne = req.query.stack;
         sub_home_schema_1.default.findOne({ "stacks.title": stackOne }).then((data) => {
