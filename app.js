@@ -71,9 +71,9 @@ app.use(cors({
   origin: ['http://localhost:5173', 'https://grahql-apollo-server-oao8.onrender.com'],
   credentials: true, 
   methods: ['GET', 'POST', 'DELETE', 'PUT', 'PATCH'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
-  exposedHeaders:['Access-Control-Allow-Origin'],
-  exposedHeaders: ['Authorization'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Cookie','Accept'],
+  //exposedHeaders:['Access-Control-Allow-Origin'],
+  exposedHeaders: ['Set-Cookie','Authorization'],
 }));
 
 //app.use(cors());
